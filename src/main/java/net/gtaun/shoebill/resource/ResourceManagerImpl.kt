@@ -59,6 +59,7 @@ class ResourceManagerImpl(private val shoebill: Shoebill, private val rootEventM
     fun unloadAllResource() {
         unloadGamemode()
         plugins.forEach { this.unloadPlugin(it) }
+        pluginMap.clear()
     }
 
     override fun loadPlugin(filename: String): Plugin? = loadPlugin(artifactLocator.getPluginFile(filename))
@@ -112,13 +113,16 @@ class ResourceManagerImpl(private val shoebill: Shoebill, private val rootEventM
         val resDataDir = File(dataDir, desc.clazz!!.name)
         if (!resDataDir.exists()) resDataDir.mkdirs()
 
-        resource.setContext(desc, shoebill, resDataDir)
+        //resource.setContext(desc, shoebill, resDataDir)
+        //odegay
+        resource.setContext(desc, shoebill, rootEventManager, resDataDir)
         return resource
     }
 
     override fun unloadPlugin(plugin: Plugin) {
         val clazz = plugin.javaClass
-        if (!pluginMap.containsKey(clazz)) return
+        if (!pluginMap.containsKey(clazz))
+            return
 
         LOGGER.info("Unloading plugin ${clazz.name}...")
 
@@ -131,7 +135,7 @@ class ResourceManagerImpl(private val shoebill: Shoebill, private val rootEventM
         val event = ResourceUnloadEvent(plugin)
         rootEventManager.dispatchEvent(event, this)
 
-        pluginMap.remove(clazz)
+        //pluginMap.remove(clazz)
     }
 
     private fun loadGamemode() {

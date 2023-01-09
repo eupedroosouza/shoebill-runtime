@@ -42,6 +42,12 @@ import java.util.concurrent.ConcurrentLinkedQueue
 class ShoebillImpl constructor(amxHandles: IntArray) : Shoebill() {
     override val version: ShoebillVersionImpl =
             ShoebillVersionImpl(this.javaClass.classLoader.getResourceAsStream(VERSION_FILENAME))
+
+    override fun reload() {
+        //odegay
+        SampNativeFunction.sendRconCommand("gmx")
+    }
+
     val config: ShoebillConfig = ShoebillConfig(FileInputStream(SHOEBILL_CONFIG_PATH))
     val resourceConfig: ResourceConfig = ResourceConfig(FileInputStream(File(config.shoebillDir, RESOURCES_CONFIG_FILENAME)))
     val artifactLocator: ShoebillArtifactLocator = ShoebillArtifactLocator(config, resourceConfig)

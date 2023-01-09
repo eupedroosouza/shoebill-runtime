@@ -97,7 +97,10 @@ class PlayerImpl(private val store: SampObjectStore, id: Int) : Player() {
 
     override var checkpoint: Checkpoint? = null
         set(checkpoint) {
-            if (!isOnline) return
+            if (!isOnline)
+                return
+
+            //println(checkpoint)
 
             if (checkpoint == null) {
                 disableCheckpoint()
@@ -489,7 +492,7 @@ class PlayerImpl(private val store: SampObjectStore, id: Int) : Player() {
 
     override fun disableCheckpoint() {
         SampNativeFunction.disablePlayerCheckpoint(id)
-        checkpoint = null
+        //checkpoint = null
     }
 
     override fun disableRaceCheckpoint() {
